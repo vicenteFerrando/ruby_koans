@@ -5,20 +5,20 @@ class AboutEqualityObjects < Neo::Koan
   def test_equality_at_object_level_returns_true_only_if_are_the_same_object
     a = Object.new
     b = Object.new
-    assert_equal __, a == b
-    assert_equal __, a == a
-    assert_equal __, a === b
-    assert_equal __, a.equal?(b)
-    assert_equal __, a.eql?(a)
+    assert_equal false, a == b
+    assert_equal true, a == a
+    assert_equal false, a === b
+    assert_equal false, a.equal?(b)
+    assert_equal true, a.eql?(a)
   end
 
   def test_equality_method_is_overriden_in_descendant_classes_to_provide_class_specific_meaning
-    assert_equal __, 16 == 16
-    assert_equal __, "string" == "string"
-    assert_equal __, "string" === "string"
+    assert_equal true, 16 == 16
+    assert_equal true, "string" == "string"
+    assert_equal true, "string" === "string"
     string = String.new("string")
     another_string = String.new("string")
-    assert_equal __, string == another_string
+    assert_equal true, string == another_string
   end
 
   # Note that the left side String is a different object than the right side String, 
@@ -29,15 +29,15 @@ class AboutEqualityObjects < Neo::Koan
   def test_eql_method_only_returns_true_if_objects_have_the_same_value
     hash1 = { :name => "Juan", :first_name => "Lopez" }
       hash2 = { :first_name => "Lopez", :name => "Juan" }
-    assert_equal __, hash1.eql?(hash2)
-    assert_equal __, "equality".eql?("equality")
+    assert_equal true, hash1.eql?(hash2)
+    assert_equal true, "equality".eql?("equality")
   end
 
   # The eql? method returns true if one object and another object have the same value. 
   # This method is used by Hash to test members for equality neverminding order
 
   def test_equal_method_should_never_be_overriden_by_descendant_classes
-    assert_equal __, "string".equal?("string") 
+    assert_equal false, "string".equal?("string") 
   end
 
   # Equality operators like (==) and (===) are overriden in the class String, and eql? method
@@ -50,7 +50,7 @@ class AboutEqualityObjects < Neo::Koan
   def test_every_car_instance_should_be_different
     car = Car.new
     another_car = Car.new
-    assert_equal __, car == another_car
+    assert_equal false, car == another_car
   end
 
   class Car2
@@ -69,8 +69,8 @@ class AboutEqualityObjects < Neo::Koan
     car = Car2.new("coupe")
     another_car = Car2.new("coupe")
     another_one_more_car = Car2.new("off_road")
-    assert_equal __, car == another_car
-    assert_equal __, car == another_one_more_car
+    assert_equal true, car == another_car
+    assert_equal false, car == another_one_more_car
   end
 
   # What have we done here?? We have overriden equality in the class Car2 by defining 
