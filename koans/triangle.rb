@@ -14,14 +14,24 @@
 #   about_triangle_project_2.rb
 #
 def triangle(a, b, c)
- if ((a == b) && (a == c) && (b == c))
-    return :equilateral
- elsif ((a == b) || (a == c) || (b == c))
-    return :isosceles
- else
-    return :scalene
- end   
-end
+   if [a,b,c].any? {|x| x <= 0}
+     raise TriangleError, "Sides must have positive length" 
+   end
+ 
+   sides = [a,b,c].sort
+ 
+   unless sides[0]+sides[1] > sides[2]
+     raise TriangleError, "Does not satisfy triangle inequality"
+   end
+ 
+   if a == b and b == c
+     :equilateral
+   elsif a == b or b == c or a == c
+     :isosceles
+   else
+     :scalene
+   end
+ end
 
 # Error class used in part 2.  No need to change this code.
 class TriangleError < StandardError
